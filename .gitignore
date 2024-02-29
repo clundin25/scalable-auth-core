@@ -1,0 +1,6 @@
+go.sum
+scalable-auth-go
+scalable-auth.h
+scalable-auth.so
+*.h
+*.a
