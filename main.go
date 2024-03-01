@@ -16,7 +16,7 @@ import (
 )
 
 //export CreateAccessToken
-func CreateAccessToken(uri *C.char, scopes *C.char, token *byte, tokenLen *int) int {
+func CreateAccessToken(uri *C.char, scopes *C.char, token *C.char, tokenLen *C.ulong) C.int {
 	if uri == nil {
 		fmt.Fprintln(os.Stderr, "'uri' cannot be NULL!")
 		return 0
@@ -49,7 +49,7 @@ func CreateAccessToken(uri *C.char, scopes *C.char, token *byte, tokenLen *int) 
 		return 0
 	}
 
-	tokenBytesLen := len(accessToken.AccessToken)
+	tokenBytesLen := C.ulong(len(accessToken.AccessToken))
 
 	if token == nil {
 
@@ -63,7 +63,8 @@ func CreateAccessToken(uri *C.char, scopes *C.char, token *byte, tokenLen *int) 
 	}
 
 	outBytes := unsafe.Slice(token, tokenBytesLen)
-	copy(outBytes, []byte(accessToken.AccessToken))
+	tokenBytes := unsafe.Slice(C.CString(accessToken.AccessToken), tokenBytesLen)
+	copy(outBytes, tokenBytes)
 
 	*tokenLen = tokenBytesLen
 	return 1
