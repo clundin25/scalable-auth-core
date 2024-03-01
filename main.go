@@ -2,6 +2,7 @@ package main
 
 /*
 #include <stdlib.h>
+typedef const char cchar;
 */
 import "C"
 
@@ -16,7 +17,7 @@ import (
 )
 
 //export CreateAccessToken
-func CreateAccessToken(uri *C.char, scopes *C.char, token *C.char, tokenLen *C.ulong) C.int {
+func CreateAccessToken(uri *C.cchar, scopes *C.cchar, token *C.char, tokenLen *C.ulong) C.int {
 	if uri == nil {
 		fmt.Fprintln(os.Stderr, "'uri' cannot be NULL!")
 		return 0
