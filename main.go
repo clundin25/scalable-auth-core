@@ -63,8 +63,11 @@ func CreateAccessToken(uri *C.cchar, scopes *C.cchar, token *C.char, tokenLen *C
 		return 0
 	}
 
+	rawToken := C.CString(accessToken.AccessToken)
+	defer C.free(unsafe.Pointer(&rawToken))
+
 	outBytes := unsafe.Slice(token, tokenBytesLen)
-	tokenBytes := unsafe.Slice(C.CString(accessToken.AccessToken), tokenBytesLen)
+	tokenBytes := unsafe.Slice(rawToken, tokenBytesLen)
 	copy(outBytes, tokenBytes)
 
 	*tokenLen = tokenBytesLen
